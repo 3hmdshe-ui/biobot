@@ -4,8 +4,11 @@ Main entry point for the Saudi High School Science Telegram Bot
 """
 
 import os
-from dotenv import load_dotenv
-load_dotenv()  # ← هذا السطر مهم لتحميل ملف .env
+
+# تحميل ملف .env فقط في بيئة التطوير المحلية
+if os.getenv("RENDER") != "true":  # متغير بيئي تحدده بنفسك في Render (سنشرح أدناه)
+    from dotenv import load_dotenv
+    load_dotenv()
 
 import asyncio
 import logging
@@ -16,7 +19,7 @@ from bot import SaudiScienceBot
 from scheduler import ContentScheduler
 from logger import setup_logging
 
-# إعداد Flask لإبقاء Replit نشطًا
+# إعداد Flask لإبقاء الخدمة نشطة
 app = Flask('')
 
 @app.route('/')
@@ -39,20 +42,14 @@ def main():
     logger.info("Starting Saudi High School Science Telegram Bot...")
 
     try:
-        # Print environment variables (للتأكد فقط - احذفها لاحقًا)
+        # طباعة المتغيرات للتأكد فقط (يمكن إزالتها لاحقًا)
         print("TELEGRAM_TOKEN:", os.getenv("TELEGRAM_TOKEN"))
         print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
 
-        # Initialize the bot
         bot = SaudiScienceBot()
-
-        # Initialize the scheduler
         scheduler = ContentScheduler(bot)
 
-        # Start the scheduler in a separate thread
         scheduler.start()
-
-        # Start the bot
         bot.run()
 
     except Exception as e:
