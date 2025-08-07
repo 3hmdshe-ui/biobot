@@ -3,6 +3,10 @@
 Main entry point for the Saudi High School Science Telegram Bot
 """
 
+import os
+from dotenv import load_dotenv
+load_dotenv()  # ← هذا السطر مهم لتحميل ملف .env
+
 import asyncio
 import logging
 from threading import Thread
@@ -29,16 +33,16 @@ def keep_alive():
 
 def main():
     """Main function to start the bot and scheduler"""
-    # إبقاء Replit نشطًا
     keep_alive()
-
-    # Setup logging
     setup_logging()
     logger = logging.getLogger(__name__)
-
     logger.info("Starting Saudi High School Science Telegram Bot...")
 
     try:
+        # Print environment variables (للتأكد فقط - احذفها لاحقًا)
+        print("TELEGRAM_TOKEN:", os.getenv("TELEGRAM_TOKEN"))
+        print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
+
         # Initialize the bot
         bot = SaudiScienceBot()
 
