@@ -3,3 +3,4 @@ flask==2.3.3
 schedule
 openai
 requests
+python-dotenv
